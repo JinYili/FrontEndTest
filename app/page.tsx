@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react' 
 import useSWR from 'swr'
-import { People as IPeople, Point as Ipoint } from './types';
+import { People as IPeople, Point as IPoint } from './types';
 import { GoogleMap, useJsApiLoader , InfoWindow } from '@react-google-maps/api';  
 import People from './components/People';
 import PeopleMarker from './components/Marker';
@@ -17,11 +17,11 @@ export default function Home() {
  
   const { data:points, error } = useSWR('api/secret', fetcher)
   const [people, setPeople] = useState<IPeople[]>()
-  const [userPoint, setUserPoint] = useState<Ipoint>()
+  const [userPoint, setUserPoint] = useState<IPoint>()
   const [selectMarker, setSelectedMarker] = useState<IPeople>()
   useEffect(() => {
     const newCalculatedPeople = userPoint && people && people.map(person=>{
-      const foundPoint = points.find((point:Point)=>point.id===person.id)
+      const foundPoint = points.find((point:IPoint)=>point.id===person.id)
       return {...person, distance: getDistance({ 
         latitude:userPoint.lat,
         longitude:userPoint.long
@@ -36,7 +36,7 @@ export default function Home() {
 useEffect(() => {
   const getPeople =async ()=>{
     const promises:any = []  ;
-    points?.forEach((p:Ipoint)=>{
+    points?.forEach((p:IPoint)=>{
       const promise = fetch(`api/people/${p.id}`).then(async r=> await r.json())
       promises.push(promise)
     })
@@ -64,7 +64,7 @@ const openWindowById =(id:number)=>{
   }
 }
 
-const markerClickHandler =(point:Ipoint)=>{
+const markerClickHandler =(point:IPoint)=>{
    const findPerson = people?.find(p=>p.id===point.id)
    findPerson && setSelectedMarker({...findPerson, position:{lat:point.lat , lng:point.long}})
 }
@@ -84,7 +84,7 @@ const markerClickHandler =(point:Ipoint)=>{
         options={{scrollwheel:false,draggable:true,gestureHandling: 'greedy', fullscreenControl:false, zoomControl:false,streetViewControl:false}}
       >
         {
-           points &&   points.map((p:Ipoint)=>
+           points &&   points.map((p:IPoint)=>
             <PeopleMarker point={p} key={p.id}  onClickHandler={markerClickHandler}/> 
           ) 
         }
