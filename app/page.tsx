@@ -7,9 +7,7 @@ import People from './components/People';
 import PeopleMarker from './components/Marker';
 import { getDistance } from 'geolib';
  
- 
-const fetcher = (...args:string[]) => fetch(...args).then(res => res.json())
-
+const fetcher = (url:string) => fetch(url).then((res) => res.json());
 export default function Home() {
  
   const { isLoaded } = useJsApiLoader({
