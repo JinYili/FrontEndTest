@@ -1,6 +1,6 @@
-import { People } from '../../types' 
+import { People  as IPeople} from '../../types' 
 import Image from 'next/image';
-export default function People ({ people,onClick }:{people:People, onClick: (id:number) => void;}) { 
+export default function People ({ people,onClick }:{people:IPeople, onClick: (id:number) => void;}) { 
   
     return (
         <div className='w-auto mb-3 rounded-xl h-48 border-2 border-slate-500 flex flex-row cursor-pointer  hover:text-blue-600 hover:border-blue-500' onClick={()=>onClick(people.id)}>

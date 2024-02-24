@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+import { decodeSecret } from '../../../helper';
 export async function GET(request: NextRequest) {
   try {
     const response = fetch(process.env.SECRET_URL || '');
     const { message } = await (await response).json();
-    const points = JSON.parse(atob(message));
-    return new NextResponse(JSON.stringify(points), {
+    const points = decodeSecret(message);
+    return new NextResponse(points, {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
