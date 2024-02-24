@@ -1,17 +1,22 @@
 
 import { Switch } from '@headlessui/react'
-
-import { useState } from 'react' 
-export default function Header ({ onClickChange }:{onClickChange: () => void;}) { 
+import { useSelector, useDispatch } from 'react-redux'
+import { switchLight } from '@/redux/slice/themeSlice'
+import {  useState } from 'react' 
+export default function Header () { 
   
+    const dispatch = useDispatch()
+   
+    const light = useSelector((state:any) => state.theme.value)
     const [enabled, setEnabled] = useState(false)
     const switchChange =()=>{
+      dispatch(switchLight())
       setEnabled(!enabled)
-      onClickChange()
-    }
+    } 
+     
     return (
-      <div className='flex justify-center items-end my-3 w-full  px-5'>
-        <p className="font-bold text-5xl h-full w-full text-blue-500 ">Locator</p>
+      <div className='flex justify-center items-end my-3 w-full px-5 '>
+        <p className={`font-bold text-5xl h-full w-full ${light? 'text-yellow-500' :'text-blue-500'}`}>Locator</p>
           <Switch
           checked={enabled}
           onChange={switchChange}

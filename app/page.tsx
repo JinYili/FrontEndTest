@@ -7,7 +7,8 @@ import People from './components/People';
 import PeopleMarker from './components/Marker';
 import Header from './components/Header'
 import { getDistance } from 'geolib';
-import Image from 'next/image';
+import store from '../redux/theme'
+import { Provider } from 'react-redux' 
 
 const fetcher = (url:string) => fetch(url).then((res) => res.json());
 export default function Home() {
@@ -21,6 +22,7 @@ export default function Home() {
   const [userPoint, setUserPoint] = useState<IPoint>()
   const [selectMarker, setSelectedMarker] = useState<IPeople>()
 
+  
   useEffect(() => {
     const newCalculatedPeople = userPoint && people && people.map(person=>{
       const foundPoint = points.find((point:IPoint)=>point.id===person.id)
@@ -72,8 +74,9 @@ export default function Home() {
   }
 
   return (
+    <Provider store={store}>
     <main className="flex min-h-screen flex-col items-center h-full">
-    <Header onClickChange={()=>{}}></Header>
+    <Header />
      { isLoaded && !error &&
       <GoogleMap
         mapContainerStyle={{
@@ -108,5 +111,6 @@ export default function Home() {
       </div>:<div className='mt-10 text-4xl font-bold my-10 text-red-500'>Please click map to point your current location</div>
     }
     </main>
+    </Provider>
   )
 }
