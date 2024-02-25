@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <Provider store={store}>
-      <main className={`flex   flex-col items-center w-full ${!theme ?'bg-black':'bg-slate-200'}`}>
+      <main className={`flex min-h-screen flex-col items-center w-full ${!theme ?'bg-black':'bg-slate-200'}`}>
         <Header themeHelper={()=>{
             setTheme(!theme)
         }}/>
