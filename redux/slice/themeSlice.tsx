@@ -6,12 +6,6 @@ export const themeSlice = createSlice({
     value:false,
   },
   reducers: {
-    on: (state) => {
-      state.value = true
-    },
-    off: (state) => {
-      state.value = false
-    },
     switchLight: (state) => {
         state.value = !state.value
       },
@@ -19,5 +13,5 @@ export const themeSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { on, off , switchLight} = themeSlice.actions
+export const {  switchLight} = themeSlice.actions
 export default themeSlice.reducer

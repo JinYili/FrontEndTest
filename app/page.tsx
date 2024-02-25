@@ -2,10 +2,10 @@
 import { useState, useEffect } from 'react' 
 import useSWR from 'swr'
 import { People as IPeople, Point as IPoint } from './types';
-import { GoogleMap, useJsApiLoader , InfoWindow } from '@react-google-maps/api';  
-import People from './components/People';
-import PeopleMarker from './components/Marker';
+import {  useJsApiLoader  } from '@react-google-maps/api';   
+import List from './components/List'
 import Header from './components/Header'
+import StarWarMap from './components/StarWarMap'
 import { getDistance } from 'geolib';
 import store from '../redux/theme'
 import { Provider } from 'react-redux' 
@@ -21,7 +21,7 @@ export default function Home() {
   const [people, setPeople] = useState<IPeople[]>()
   const [userPoint, setUserPoint] = useState<IPoint>()
   const [selectMarker, setSelectedMarker] = useState<IPeople>()
-
+  const [theme, setTheme] = useState<boolean>(false)
   
   useEffect(() => {
     const newCalculatedPeople = userPoint && people && people.map(person=>{
@@ -60,13 +60,6 @@ export default function Home() {
     );
   };
   
-  const openWindowById =(id:number)=>{
-    const find = people && people.find(person =>person.id=id) 
-    if(find){
-      const win = window.open(find.wiki, '_blank');
-      win && win.focus();
-    }
-  }
 
   const markerClickHandler =(point:IPoint)=>{
     const findPerson = people?.find(p=>p.id===point.id)
@@ -75,42 +68,16 @@ export default function Home() {
 
   return (
     <Provider store={store}>
-    <main className="flex min-h-screen flex-col items-center h-full">
-    <Header />
-     { isLoaded && !error &&
-      <GoogleMap
-        mapContainerStyle={{
-          width: '100vw',
-          height: '50vh',
-        }}
-        center={{lat: 30,lng: 0 }}
-        onClick={onMapClick}
-        zoom={3}
-        options={{scrollwheel:false,draggable:false,gestureHandling: 'greedy', fullscreenControl:false, zoomControl:false,streetViewControl:false}}
-      >
-        {
-           points &&   points.map((p:IPoint)=>
-            <PeopleMarker point={p} key={p.id}  onClickHandler={markerClickHandler}/> 
-          ) 
-        }
-        {
-          userPoint && <PeopleMarker point={userPoint} isUser={true} onClickHandler={()=>{}}/> 
-        }
-        {
-            selectMarker &&  
-            <InfoWindow position={selectMarker.position}>
-                  <img src={selectMarker.image}  className='rounded-xl w-16 h-16' />
-            </InfoWindow>
-        }
-      </GoogleMap>
-  }
-    {
-      people&&  userPoint?
-      <div className='h-auto w-full mt-5 grid gap-4 grid-cols-1 xl:grid-cols-2'>
-      {people.sort((a,b)=>a.distance - b.distance).map(p=><People people={p} key={p.name}  onClick={openWindowById}/>)}
-      </div>:<div className='mt-10 text-4xl font-bold my-10 text-red-500'>Please click map to point your current location</div>
-    }
-    </main>
+      <main className={`flex   flex-col items-center w-full ${!theme ?'bg-black':'bg-slate-200'}`}>
+        <Header themeHelper={()=>{
+            setTheme(!theme)
+        }}/>
+        { isLoaded && !error &&
+            <StarWarMap  selectMarker={selectMarker} userPoint={userPoint} 
+              points={points} markerClickHandler={markerClickHandler} onMapClick={onMapClick}></StarWarMap>
+          }
+        <List people={people} userPoint={userPoint} /> 
+      </main>
     </Provider>
   )
 }

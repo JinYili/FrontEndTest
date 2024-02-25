@@ -3,24 +3,25 @@ import { Switch } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
 import { switchLight } from '@/redux/slice/themeSlice'
 import {  useState } from 'react' 
-export default function Header () { 
-  
-    const dispatch = useDispatch()
-   
+export default function Header ({themeHelper}:{ themeHelper: () => void}) { 
+
+  const dispatch = useDispatch()
     const light = useSelector((state:any) => state.theme.value)
     const [enabled, setEnabled] = useState(false)
     const switchChange =()=>{
       dispatch(switchLight())
+      themeHelper()
       setEnabled(!enabled)
+     
     } 
      
     return (
       <div className='flex justify-center items-end my-3 w-full px-5 '>
-        <p className={`font-bold text-5xl h-full w-full ${light? 'text-yellow-500' :'text-blue-500'}`}>Locator</p>
+        <p className={`font-bold text-5xl h-full w-full ${light?  ' text-black' :' text-yellow-500'}`}>Locator</p>
           <Switch
           checked={enabled}
           onChange={switchChange}
-          className={`${enabled ? 'bg-blue-500' : 'bg-gray-500'}
+          className={`${enabled ? 'bg-blue-500' : 'bg-yellow-500'}
             relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white/75`}
         >
           <span className="sr-only">Use setting</span>
