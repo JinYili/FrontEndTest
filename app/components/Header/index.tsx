@@ -17,7 +17,7 @@ export default function Header ({themeHelper}:{ themeHelper: () => void}) {
      
     return (
       <div className='flex justify-center items-end my-3 w-full px-5 '>
-        <p className={`font-bold text-5xl h-full w-full ${light?  ' text-black' :' text-yellow-500'}`}>Locator</p>
+        <p className={`font-bold text-5xl h-full w-full ${light?  ' text-blue-500' :' text-yellow-500'}`}>Locator</p>
           <Switch
           checked={enabled}
           onChange={switchChange}
