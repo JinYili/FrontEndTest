@@ -54,7 +54,7 @@ export default function Home() {
         }}/>
         
         <div className='w-full flex justify-center my-3 h-10'>
-          <input name="full_name" className='rounded-xl w-3/4 lg:w-1/3  px-3' onChange={(e)=>setSearchText(e.target.value.trim())} type="text" placeholder='Two letter for searching in name'/>
+          <input name="full_name" className='rounded-xl w-3/4 lg:w-1/3  px-3' onChange={(e)=>setSearchText(e.target.value.trim())} type="text" placeholder='Two letter for searching in fields'/>
         </div>
         <div className='w-full flex  justify-between  my-3 h-10 '>
            <button className='bg-blue-600 text-white font-semibold mx-5 rounded-3xl w-1/2 lg:w-1/4' onClick={()=>startSorting('name')}> Sort by Name</button>
