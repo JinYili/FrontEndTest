@@ -1,12 +1,15 @@
 
 import { Switch } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { switchLight } from '@/redux/slice/themeSlice'
+import { switchLight } from '@/redux/slice/themeSlice' 
 import {  useState } from 'react' 
+import {RootState as IRootState} from '@/redux/theme'
+
+
 export default function Header ({themeHelper}:{ themeHelper: () => void}) { 
 
   const dispatch = useDispatch()
-    const light = useSelector((state:any) => state.theme.value)
+    const light = useSelector((state:IRootState) => state.theme.value)
     const [enabled, setEnabled] = useState(false)
     const switchChange =()=>{
       dispatch(switchLight())

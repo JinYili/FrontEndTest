@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
       status: 200,
       headers: { 'Content-Type': 'application/json' },
     });
-  } catch (error: any) {
+  } catch (e: unknown) {
     const error_response = {
       status: 'error',
-      message: error.message,
+      message: (e as Error).message,
     };
     return new NextResponse(JSON.stringify(error_response), {
       status: 500,

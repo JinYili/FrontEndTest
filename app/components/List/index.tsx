@@ -1,8 +1,10 @@
 import { People  as IPeople, Company as ICompany, Address as IAddress} from '../../types'  
 import { useSelector } from 'react-redux'
 import People from '../People' 
+import {RootState as IRootState} from '@/redux/theme'
+
 export default function List ({people=[], searchText =''}:{people:IPeople[], searchText:string }) { 
-  const light = useSelector((state:any) => state.theme.value)
+  const light = useSelector((state:IRootState) => state.theme.value)
    
 
   const filterAllFields =(person:IPeople,txt:string):boolean=>{
