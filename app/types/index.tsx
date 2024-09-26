@@ -1,32 +1,29 @@
 export type People = {
-  id: number;
+    id: number;
     name: string;
-    height: number;
-    mass:number;
-    gender: string;
-    homeworld: string;
-    wiki: string;
-    image: string;
-    born: number;
-    died:number;
-    diedLocation: string;
-    cybernetics:string;
-    species:string;
-    eyeColor:string;
-    skinColor:string;
-    hairColor:string;
-    affiliations:string[];
-    formerAffiliations:string[]
-    distance:number
-    position?:{
-      lat:number;
-      lng:number;
-    }
+    username: string;
+    email:string;
+    phone: string;
+    website: string;
+    company:Company;
+    address: Address
   }; 
 
-export type Point ={
-  id:number;
-  lat:number;
-  long:number; 
+export type Company ={
+  name:string;
+  catchPhrase:string;
+  bs:string; 
 }
  
+
+export type Address ={
+  street:string;
+  suite:string;
+  city:string; 
+  zipcode:string; 
+  geo:Geo
+}
+export type Geo ={
+  lat:string; 
+  lng:string; 
+}
