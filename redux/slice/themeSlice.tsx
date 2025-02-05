@@ -1,20 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit'
-
-export const themeSlice = createSlice({
-  name: 'theme',
+import { Languages as ILanguages } from '../../app/types'
+export const languageSlice = createSlice({
+  name: 'language',
   initialState: {
-    value:true,
+    value: ILanguages.English,
   },
   reducers: {
-    switchLight: (state) => {
-        state.value = !state.value
+    switchLanguage: (state) => {
+      state.value = state.value === ILanguages.English ? ILanguages.Spainnish : ILanguages.English;
       },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const {  switchLight} = themeSlice.actions
+export const {switchLanguage} = languageSlice.actions
 
-
-export default themeSlice.reducer
+export default languageSlice.reducer
 

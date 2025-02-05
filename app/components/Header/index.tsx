@@ -1,26 +1,30 @@
-
+'use client'
 import { Switch } from '@headlessui/react'
 import { useSelector, useDispatch } from 'react-redux'
-import { switchLight } from '@/redux/slice/themeSlice' 
-import {  useState } from 'react' 
+import { switchLanguage } from '../../../redux/slice/themeSlice' 
+import { useState } from 'react' 
 import {RootState as IRootState} from '@/redux/theme'
+import { useTranslation } from 'react-i18next'; 
 
-
-export default function Header ({themeHelper}:{ themeHelper: () => void}) { 
+export default function Header ({languageHelper}:{ languageHelper: () => void}) { 
 
   const dispatch = useDispatch()
-    const light = useSelector((state:IRootState) => state.theme.value)
-    const [enabled, setEnabled] = useState(false)
+    const light = useSelector((state:IRootState) => state.language.value)
+    const [enabled, setEnabled] = useState(false);
+    const { t } = useTranslation();
+
     const switchChange =()=>{
-      dispatch(switchLight())
-      themeHelper()
+      
+      dispatch(switchLanguage())
+      languageHelper()
       setEnabled(!enabled)
-     
+      
     } 
      
     return (
       <div className='flex justify-center items-end my-3 w-full px-5 '>
-        <p className={`font-bold text-5xl h-full w-full ${light?  ' text-blue-500' :' text-yellow-500'}`}>PEOPLE</p>
+        
+        <p className={`font-bold text-5xl h-full w-full ${light?  ' text-blue-500' :' text-yellow-500'}`}>{t('currency_exchange')} </p>
         
           <Switch
           checked={enabled}

@@ -1,48 +1,71 @@
-import { People  as IPeople, Company as ICompany, Address as IAddress} from '../../types'  
-import { useSelector } from 'react-redux'
-import People from '../People' 
-import {RootState as IRootState} from '@/redux/theme'
+ 
+import { Currency as ICurrency  } from '../../types'; 
+import {  useState } from 'react';
+import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions ,ComboboxButton} from '@headlessui/react'
+import { CheckIcon  } from '@heroicons/react/20/solid'
+ 
+type paramterType ={currencies:ICurrency[] ,selectChange:Function,placeholder:string,viewHelper:Function} 
 
-export default function List ({people=[], searchText =''}:{people:IPeople[], searchText:string }) { 
-  const light = useSelector((state:IRootState) => state.theme.value)
+export default function CurrencyList ({currencies=[], selectChange , placeholder ,viewHelper=()=>{}}:paramterType) { 
    
-
-  const filterAllFields =(person:IPeople,txt:string):boolean=>{
-     const output:boolean[] =[];
-      Object.keys(person).forEach((key:string)=>{
-      const value = person[key as keyof IPeople]; 
-      if ( typeof value == 'string' || typeof value == 'number')
-        output.push(value.toString().toLowerCase().includes(txt)) 
-      else if('name' in value){
-        output.push(value['name'].toString().toLowerCase().includes(txt)) 
-        output.push(value['catchPhrase'].toString().toLowerCase().includes(txt)) 
-        output.push(value['bs'].toString().toLowerCase().includes(txt)) 
-      }else if ('city' in value){
-        output.push(value['street'].toString().toLowerCase().includes(txt)) 
-        output.push(value['city'].toString().toLowerCase().includes(txt)) 
-        output.push(value['suite'].toString().toLowerCase().includes(txt)) 
-        output.push(value['zipcode'].toString().toLowerCase().includes(txt)) 
-      }
-
-    }) 
-    return output.find(o=>o===true) || false
+  const [selectedCurrency, setSelectedCurrency] = useState<ICurrency|null>(null)
+  const [query, setQuery] = useState('')
+   
+  const chnageSelection =(v:ICurrency|null)=>{
+    setSelectedCurrency(v)
+    selectChange(v?.code.toUpperCase())
+    viewHelper()
   } 
+  const filteredCurrency =
+  query === '' 
+    ? currencies
+    : currencies.filter((c) => {
+        return c.name.toLowerCase().includes(query.toLowerCase()) || c.code.toLowerCase().includes(query.toLowerCase())
+      })
+
   return (
-    
-      people.length>0?
-      <div className='h-auto w-full mt-2 px-5 grid gap-4 grid-cols-1 xl:grid-cols-2'>
-        {people.filter((p:IPeople)=>{ 
-          return (searchText.length<2)? true:filterAllFields(p,searchText);
-        }).map((p:IPeople)=>{
-            return <People people={p} key={p.id}/>
-        })}
-      </div>
-      :
-      <div className={`mt-10 text-4xl font-bold my-10 ${light? 'text-black':'text-yellow-500'}`}>Nothing to show</div>
+    <div className='w-full h-full border-2 border-blue-400 rounded-xl'>
+        <Combobox value={selectedCurrency} onChange={(value) => chnageSelection(value)} onClose={() => setQuery('')}>
+        <div className="relative h-full">
+          <ComboboxInput
+            className={
+              'rounded-lg h-full lg:w-full min-w-96     bg-slate-200 w-full pr-8 pl-3 text-base text-slate-600 font-semibold focus:outline-none  '
+            }
+            displayValue={(c:ICurrency) => c && c.code? c.code:''}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder={placeholder}
+          />
+          <ComboboxButton className="group absolute inset-y-0 right-8 w-full" />
+        </div>
+
+        <ComboboxOptions
+          anchor="bottom"
+          transition
+          className={
+            'w-[var(--input-width)] rounded-xl  !max-h-[50vh]  bg-slate-400 overflow-y-auto    my-1 [--anchor-gap:var(--spacing-1)] empty:invisible transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0'
+          }
+        >
+          {filteredCurrency.map((c) => (
+            <ComboboxOption
+              key={c.code}
+              value={c}
+              className={`"group flex cursor-default  items-center gap-2 rounded-lg py-1.5 px-3 select-none w-full bg-slate-400 my-1 hover:bg-slate-600 hover:text-white "  ${ selectedCurrency && c.code === selectedCurrency.code? 'text-blue-800':'' }`}
+            >
+            <CheckIcon className="size-4 w-1/6" />{c.name} 
+            </ComboboxOption>
+          ))}
+        </ComboboxOptions>
+      </Combobox>
+   </div>
     
   )
 }
 
+ 
+
+ 
+
+ 
  
 
  
